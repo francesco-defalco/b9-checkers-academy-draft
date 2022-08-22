@@ -67,3 +67,7 @@ const (
 	CreateGameGas = 15000
 	PlayMoveGas   = 1000
 )
+
+const (
+	LeaderboardKey = "Leaderboard-value-"
+)

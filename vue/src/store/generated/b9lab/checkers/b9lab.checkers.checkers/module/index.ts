@@ -7,9 +7,11 @@ import { Api } from "./rest";
 import { MsgCreateGame } from "./types/checkers/tx";
 import { MsgPlayMove } from "./types/checkers/tx";
 
+
 const types = [
   ["/b9lab.checkers.checkers.MsgCreateGame", MsgCreateGame],
   ["/b9lab.checkers.checkers.MsgPlayMove", MsgPlayMove],
+  
 ];
 export const MissingWalletError = new Error("wallet is required");
 

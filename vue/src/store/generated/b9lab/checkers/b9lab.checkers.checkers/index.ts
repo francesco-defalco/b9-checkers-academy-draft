@@ -1,12 +1,14 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
+import { Leaderboard } from "./module/types/checkers/leaderboard"
 import { Params } from "./module/types/checkers/params"
 import { PlayerInfo } from "./module/types/checkers/player_info"
 import { StoredGame } from "./module/types/checkers/stored_game"
 import { SystemInfo } from "./module/types/checkers/system_info"
+import { WinningPlayer } from "./module/types/checkers/winning_player"
 
 
-export { Params, PlayerInfo, StoredGame, SystemInfo };
+export { Leaderboard, Params, PlayerInfo, StoredGame, SystemInfo, WinningPlayer };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -51,12 +53,15 @@ const getDefaultState = () => {
 				CanPlayMove: {},
 				PlayerInfo: {},
 				PlayerInfoAll: {},
+				Leaderboard: {},
 				
 				_Structure: {
+						Leaderboard: getStructure(Leaderboard.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						PlayerInfo: getStructure(PlayerInfo.fromPartial({})),
 						StoredGame: getStructure(StoredGame.fromPartial({})),
 						SystemInfo: getStructure(SystemInfo.fromPartial({})),
+						WinningPlayer: getStructure(WinningPlayer.fromPartial({})),
 						
 		},
 		_Registry: registry,
@@ -126,6 +131,12 @@ export default {
 						(<any> params).query=null
 					}
 			return state.PlayerInfoAll[JSON.stringify(params)] ?? {}
+		},
+				getLeaderboard: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Leaderboard[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -318,6 +329,28 @@ export default {
 				return getters['getPlayerInfoAll']( { params: {...key}, query}) ?? {}
 			} catch (e) {
 				throw new Error('QueryClient:QueryPlayerInfoAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryLeaderboard({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryLeaderboard()).data
+				
+					
+				commit('QUERY', { query: 'Leaderboard', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryLeaderboard', payload: { options: { all }, params: {...key},query }})
+				return getters['getLeaderboard']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryLeaderboard API Node Unavailable. Could not perform query: ' + e.message)
 				
 			}
 		},
