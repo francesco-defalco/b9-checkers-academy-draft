@@ -71,3 +71,8 @@ const (
 const (
 	LeaderboardKey = "Leaderboard-value-"
 )
+
+const (
+	LeaderboardWinnerLength = uint64(100)
+	DateAddedLayout         = DeadlineLayout
+)
