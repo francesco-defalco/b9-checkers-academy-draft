@@ -51,6 +51,7 @@ Branches:
 * [`leaderboard-object`](../../tree/leaderboard-object), [diff](../../compare/player-info-handling..leaderboard-object)
 * [`leaderboard-handling`](../../tree/leaderboard-handling), [diff](../../compare/leaderboard-object..leaderboard-handling)
 * [`migration`](../../tree/migration), [diff](../../compare/leaderboard-handling..migration)
+* [`migration-prod`](../../tree/migration-prod), [diff](../../compare/migration..migration-prod)
 
 ## Version 1 progressive tags
 
