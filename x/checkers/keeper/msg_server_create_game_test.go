@@ -224,6 +224,9 @@ func TestCreateGameFarFuture(t *testing.T) {
 	msgSrvr, keeper, context := setupMsgServerCreateGame(t)
 	ctx := sdk.UnwrapSDKContext(context)
 	systemInfo, found := keeper.GetSystemInfo(ctx)
+	if !found {
+		sdkerrors.Wrapf(types.ErrGameNotFound, "game doesn't exist")
+	}
 	systemInfo.NextId = 1024
 	keeper.SetSystemInfo(ctx, systemInfo)
 	createResponse, err := msgSrvr.CreateGame(context, &types.MsgCreateGame{
